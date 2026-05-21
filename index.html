@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For KoKo</title>
+    <style>
+        /* ၁။ အခြေခံ Layout နှင့် Matrix နောက်ခံ */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        /* ၂။ Countdown နှင့် တစ်လုံးချင်းပေါ်မည့် စာသား */
+        #text-container {
+            position: absolute;
+            z-index: 10;
+            text-align: center;
+        }
+
+        #animated-text {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.8), 0 0 20px rgba(255, 51, 102, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        /* ၃။ Heart Collage Area */
+        #heart-collage-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ဓာတ်ပုံတစ်ပုံချင်းစီ၏ ပုံစံ */
+        .collage-photo {
+            position: absolute;
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+            /* အစမှာ အလယ်ဗဟိုမှာ စုနေပြီး ပျောက်နေပါမယ် */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* နှလုံးသားပုံစံ ပြန့်ထွက်လာချိန်တွင် သုံးမည့် Class */
+        .collage-photo.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* အလယ်ကစာသား */
+        #center-wish {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff3366;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 1s ease 1s;
+            z-index: 6;
+            width: 200px;
+        }
+
+        #center-wish.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .hidden { display: none !important; }
+
+            /* 📱 ဖုန်း Screen ပေါ်မူတည်ပြီး အလိုအလျောက် အရွယ်အစား ထိန်းချုပ်မည့် Container */
+        #heart-collage-container {
+            position: relative;
+            width: 90vw;
+            height: 90vw;
+            max-width: 550px;
+            max-height: 550px;
+            z-index: 5;
+        }
+
+        .collage-photo {
+            position: absolute;
+            /* ဖုန်းမှာ ပုံတွေ သိပ်မကြီးနေအောင် % နဲ့ ထိန်းထားပါတယ် */
+            width: 14%; 
+            height: 14%;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1.5px solid #ffffff;
+            box-shadow: 0 0 8px rgba(255, 51, 102, 0.5);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .collage-photo.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #center-wish {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff3366;
+            opacity: 0;
+            transition: all 1s ease 1s;
+            z-index: 6;
+            width: 50%;
+        }
+
+        #center-wish.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <div id="text-container">
+        <h1 id="animated-text">READY?</h1>
+    </div>
+
+    <div id="heart-collage-container" class="hidden">
+        <div id="center-wish">Happy 1 Month Anniversary ❤️</div>
+        
+        <img class="collage-photo" src="kk1.jpg">
+        <img class="collage-photo" src="kk2.jpg">
+        <img class="collage-photo" src="kk3.jpg">
+        <img class="collage-photo" src="kk4.jpg">
+        <img class="collage-photo" src="kk5.jpg">
+        <img class="collage-photo" src="kk6.jpg">
+        <img class="collage-photo" src="kk7.jpg">
+        <img class="collage-photo" src="kk8.jpg">
+        <img class="collage-photo" src="kk9.jpg">
+        <img class="collage-photo" src="kk10.jpg">
+        <img class="collage-photo" src="kk11.jpg">
+        <img class="collage-photo" src="kk12.jpg">
+        <img class="collage-photo" src="kk13.jpg">
+        <img class="collage-photo" src="kk14.jpg">
+        <img class="collage-photo" src="kk15.jpg">
+        <img class="collage-photo" src="kk16.jpg">
+        <img class="collage-photo" src="kk17.jpg">
+        <img class="collage-photo" src="kk18.jpg"><img class="collage-photo" src="photo19.jpg">
+        <img class="collage-photo" src="kk20.jpg">
+    </div>
+
+    <script>
+        // === ၁။ Matrix Rain Effect ===
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = '0123456789❤️✨🌸';
+        const alphabet = katakana.split('');
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const rainDrops = Array.from({ length: columns }).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ff3366'; // ပန်းရောင် Matrix မိုးရေစက်
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        }
+        const matrixInterval = setInterval(drawMatrix, 30);
+
+        // === ၂။ Text Animation Logic ===
+        const words = ["3", "2", "1", "HAPPY", "ONE MONTH", "ANNIVERSARY", "Koe Koe❤️"];
+        let wordIndex = 0;
+        const animatedText = document.getElementById("animated-text");
+
+        function showWords() {
+            if (wordIndex < words.length) {
+                animatedText.innerText = words[wordIndex];
+                wordIndex++;
+                setTimeout(showWords, 1200);
+            } else {
+                // စာသားပြီးရင် စာသား Container ကိုဖျောက်၊ Heart Collage ကိုဖော်
+                document.getElementById("text-container").classList.add("hidden");
+                const collageContainer = document.getElementById("heart-collage-container");
+                collageContainer.classList.remove("hidden");
+                
+                // နှလုံးသားပုံဖော်မည့် Function ကိုလှမ်းခေါ်ခြင်း
+                setTimeout(generateHeartShape, 200);
+            }
+        }
+
+        // === ၃။ Heart Shape Coordinates Logic (ဓာတ်ပုံ ၂၀ အတွက် နေရာချခြင်း) ===
+        // နှလုံးသားပုံစံဖြစ်စေမည့် X, Y နေရာများ (စုစုပေါင်းနေရာ ၂၀)
+        const heartCoordinates = [
+            {x: 300, y: 120}, // အပေါ်အလယ်မြောင်း
+            {x: 230, y: 80},  {x: 370, y: 80},
+            {x: 160, y: 70},  {x: 440, y: 70},
+            {x: 90, y: 90},   {x: 510, y: 90},
+            {x: 50, y: 150},  {x: 550, y: 150},
+            {x: 40, y: 230},  {x: 560, y: 230},
+            {x: 70, y: 310},  {x: 530, y: 310},
+            {x: 120, y: 390}, {x: 480, y: 390},
+            {x: 180, y: 460}, {x: 420, y: 460},
+            {x: 240, y: 520}, {x: 360, y: 520},
+            {x: 300, y: 560}  // အောက်ဘက်အချွန်ဆုံးနေရာ
+        ];
+
+        function generateHeartShape() {
+            const photos = document.querySelectorAll('.collage-photo');
+            
+            photos.forEach((photo, index) => {
+                if(heartCoordinates[index]) {
+                    // တစ်ပုံချင်းစီကို သတ်မှတ်ထားတဲ့ နှလုံးသား Coordinate တွေအတိုင်း ရွှေ့ပေးတာပါ
+                    photo.style.left = (heartCoordinates[index].x - 42) + 'px'; // 42 က ပုံအကျယ်ရဲ့ တစ်ဝက်နှုတ်တာပါ
+                    photo.style.top = (heartCoordinates[index].y - 42) + 'px';
+                    
+                    // ပုံလေးတွေ တစ်ပုံချင်းစီ လှပစွာ ဖြန့်ထွက်လာအောင် Delay ပေးပြီး Active လုပ်ပါတယ်
+                    setTimeout(() => {
+                        photo.classList.add('active');
+                    }, index * 100); 
+                }
+            });
+
+            // နောက်ဆုံးတွင် အလယ်က စာသားကို ဖော်ပေးပါမည်
+            setTimeout(() => {
+                document.getElementById('center-wish').classList.add('show');
+            }, 2000);
+        }
+
+       { // စာမျက်နှာပွင့်ပြီးတာနဲ့ ၁ စက္ကန့်အကြာတွင် စတင်မည်window.onload = function() {
+            setTimeout(showWords, 1000);
+        };
+    </script>
+</body>
+</html>
